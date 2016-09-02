@@ -1,0 +1,29 @@
+.black {
+  color: black
+}
+.chatApp{
+ padding-top:40px;  
+    .img-user{
+      max-height:40px;
+
+    }
+    .chatWindow{
+        opacity: 0;
+    }
+    .loaded{
+        opacity : 1;
+    }
+    .main-div{
+        max-height: 373px;
+        overflow: auto;
+        overflow-x: hidden;
+    }
+    .highlightedUser{
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+    .media-body span{
+        word-break: break-all;
+    }
+}
