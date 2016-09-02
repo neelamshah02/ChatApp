@@ -9,22 +9,22 @@ module.exports = React.createClass({
 
     componentWillMount:function(){
         this.fbref = fireObj.database().ref('users');
-        
+
         this.userRef = this.fbref.child(this.props.params.user);
-        
+
         this.fbChatRef =  fireObj.database().ref('chats');
-        
+
         this.bindAsObject(this.userRef, 'user');
-        
+
         this.bindAsArray(this.fbref, 'users');
         this.bindAsObject(this.fbref, 'usersobj');
-        
+
         this.bindAsObject(this.fbChatRef, 'chats');
         this.fbChatRef.on('value', this.updatedChat);
-       
-    
-        
-       
+
+
+
+
       },
     getInitialState:function(){
         return {
@@ -38,63 +38,77 @@ module.exports = React.createClass({
         })
     },
     render :function(){
-        
+
         var user = this.state.user || {};
-        
+if(!user.hasOwnProperty('.value'))
         return <div className="container">
 <div className="row chatApp">
     <h3 className="text-center" >CHAT WINDOW OF  {user.name}</h3>
     <br /><br />
     <div className={"col-md-8 chatWindow "+(this.state.loaded?"loaded":"")} >
-        
+
         {this.renderChatWindow(user)}
-       
+
     </div>
-    
-    <UsersPanel  users= {this.state.users} chats={this.state.chats} fRef = {this.firebaseRefs} loginUser={user}/>
+
+    <UsersPanel  users= {this.state.users} chats={this.state.chats} fRef = {this.firebaseRefs} loginUser={user} clearText = {this.clearText}/>
 </div>
   </div>
-        
-   
+else
+ return <h1>Wrong User id!!</h1>
+
     },
     componentDidUpdate :function(){
         var objDiv = document.getElementById("chatWindow");
+        if(objDiv)
         objDiv.scrollTop = objDiv.scrollHeight;
     },
+
+    clearText : function(){
+        this.setState({
+            text : ""
+        })
+    },
     renderChatWindow: function(user){
-       
+
         if(user.chatWith){
             var chatUserDetails = this.state.usersobj?(this.state.usersobj[user.chatWith]?this.state.usersobj[user.chatWith]:{}):{};
             return <div className="panel panel-info">
                     <div className="panel-heading">
-                        {user.chatWithName}
-                        &nbsp; &nbsp;
-                        {chatUserDetails.istyping?"typing...":""}
+                       <b> {user.chatWithName}{' '}{' '}<span className="typing-text">{chatUserDetails.istyping?"typing...":""}</span></b>
                     </div>
                 <div className="panel-body main-div" id="chatWindow">
                         <ul className="media-list">
 
                             {this.showMessages() }
-                            
+
                         </ul>
                     </div>
                     <div className="panel-footer">
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Enter Message" value={this.state.text} onChange={this.handleChangeText}/>
+                            <input type="text" className="form-control" placeholder="Enter Message" onKeyDown={this.enterMsg} value={this.state.text} onChange={this.handleChangeText}/>
                             <span className="input-group-btn">
                                 <button className="btn btn-info" id="chatWindowbtn" type="button" onClick={this.handleSend}>SEND</button>
                             </span>
                         </div>
                     </div>
                 </div>
-            
+
         }
         else{
             return <h2>No User Selected!!</h2>
-       } 
-       
+       }
+
+    },
+    enterMsg :function(evt){
+        if(evt.keyCode == 13)
+        {
+            this.handleSend()
+        }
     },
     handleSend : function(){
+        if(this.state.text == "")
+        return ;
         var msgRef = this.firebaseRefs.chats.child(this.getKeyOfMsgInstance())
         msgRef.push({
             msg : this.state.text,
@@ -102,7 +116,7 @@ module.exports = React.createClass({
             sender: this.state.user['.key'],
             senderName : this.state.user.name,
             isSeen: false
-            
+
         })
         this.setState({
             text : ""
@@ -111,7 +125,7 @@ module.exports = React.createClass({
     handleChangeText : function(evt){
         this.setState({
             text : evt.target.value,
-           
+
         })
         this.firebaseRefs.user.update({
             istyping : true
@@ -138,7 +152,7 @@ module.exports = React.createClass({
             {
                 return this.state.user['.key']+"_"+this.state.user.chatWith
             }
-            
+
     },
     getMessages:function(){
         var chats = this.state.chats;
@@ -149,7 +163,7 @@ module.exports = React.createClass({
     },
     showMessages : function(){
        var chattingKey = this.getKeyOfMsgInstance();
-       
+
         var msges = this.getMessages();
         if(msges){
             var chatlist =[];
@@ -161,14 +175,14 @@ module.exports = React.createClass({
                         var msgSeenRef= this.firebaseRefs.chats.child(chattingKey);
                         msgSeenRef.child(x).update({isSeen:true});
                     }
-                
+
             };
-              
+
             return chatlist;
         }else
             {
-                return "ready to chat"; 
+                return "ready to chat";
             }
     }
-    
+
 })

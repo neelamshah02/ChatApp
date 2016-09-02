@@ -28,8 +28,8 @@ var notify = function(error) {
   if(error.lineNumber) {
     message += '\nOn Line: ' + error.lineNumber;
   }
-
-  notifier.notify({title: title, message: message});
+  gutil.log(title+"\n"+message);
+  //notifier.notify({title: title, message: message});
 };
 
 var bundler = watchify(browserify({

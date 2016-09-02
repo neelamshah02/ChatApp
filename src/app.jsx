@@ -9,17 +9,17 @@ var Route=ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var browserHistory  = ReactRouter.browserHistory;
 
-// history={browserHistory}
-var routes =(    
+//history={browserHistory}
+var routes =(
     <Router >
         <Route path="/" component={Register} />
         <Route path="/chat/:user" component={Chat} />
-        
+
     </Router>
 );
-                              
- 
-    
+
+
+
 
 
 

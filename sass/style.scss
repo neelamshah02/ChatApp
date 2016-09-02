@@ -2,7 +2,7 @@
   color: black
 }
 .chatApp{
- padding-top:40px;  
+ padding-top:40px;
     .img-user{
       max-height:40px;
 
@@ -25,5 +25,8 @@
     }
     .media-body span{
         word-break: break-all;
+    }
+    .typing-text{
+        color:green;
     }
 }

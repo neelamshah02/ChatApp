@@ -6,19 +6,19 @@ var ReactRouter =require('react-router');
 //var Route=ReactRouter.Route;
 //var IndexRoute = ReactRouter.IndexRoute;
 var browserHistory  = ReactRouter.browserHistory;
- 
-module.exports = React.createClass({  
+
+module.exports = React.createClass({
 mixins:[ ReactFire ],
 
 componentWillMount:function(){
      this.fbref = fireObj.database().ref('users');
     this.bindAsArray(this.fbref, 'users')
     // this.fbref.on('value', this.updateTodo);
-     
+
 
 },
     getInitialState:function(){
-    
+
     return {
       name : "",
       mobile : ""
@@ -35,23 +35,23 @@ componentWillMount:function(){
                 <div className="panel-body">
                     <form id="registerForm" role="form">
                         <fieldset>
-                            
+
                             <div className="form-group">
-                                <input className="form-control" 
-                                 value={this.state.name} 
-                                onChange={this.handleNameChange} 
+                                <input className="form-control"
+                                 value={this.state.name}
+                                onChange={this.handleNameChange}
                                 placeholder="Name" name="name" type="text" />
                             </div>
                             <div className="form-group">
-                                <input className="form-control" 
-                                value={this.state.mobile} 
-                                onChange={this.handleMobileChange} 
+                                <input className="form-control"
+                                value={this.state.mobile}
+                                onChange={this.handleMobileChange}
                                 placeholder="mobile number" name="mobile" type="mobile" autofocus/>
                             </div>
-                            
+
                             <button type="button" onClick ={this.registerUser} className="btn btn-success btn-block">Register</button>
-                            
-                            
+
+
                         </fieldset>
                     </form>
                 </div>
@@ -63,13 +63,13 @@ componentWillMount:function(){
 handleMobileChange:function(evt){
 this.setState({
                 mobile : evt.target.value,
-                
+
             })
 },
 handleNameChange:function(evt){
 this.setState({
                 name : evt.target.value,
-                
+
             })
 },
 registerUser:function(){
@@ -81,17 +81,18 @@ if(this.state.name!="" && this.state.mobile!="")
 var data = {
     name: this.state.name,
     number: this.state.mobile,
-    
+
   }
 
  var user = this.firebaseRefs.users.push(data);
-    
+
  this.setState({
     name : "",
     mobile:""
  });
-    
-    browserHistory.push('/chat/'+user.key)
+ window.location.hash ='/chat/'+user.key;
+
+    //browserHistory.push('/chat/'+user.key)
  }
   else{
    alert("Please fill the fields")

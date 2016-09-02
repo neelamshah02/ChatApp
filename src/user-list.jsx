@@ -7,12 +7,12 @@ module.exports = React.createClass({
             name : item.name,
             mobile : item.mobile,
             key: item['.key']
-            
+
         }
     },
     mixins : [ ReactFire ],
     render :function(){
-        console.log(this.state.highLightUser)
+
         return <li onClick={this.startChatWithUser} className={"media "+(this.props.user['.key'] === this.props.loginUser.chatWith?"highlightedUser":"")}    >
 
     <div className="media-body">
@@ -23,24 +23,25 @@ module.exports = React.createClass({
             </a>
             <div className="media-body" >
                 <h5>{this.state.name} {this.props.unReadMsg?"("+this.props.unReadMsg+")":""}</h5>
-                {(this.props.loginUser['.key'] === this.props.user.chatWith)?(this.props.user.istyping?"typing....":""):""}
-                
-                <small className="text-muted">Active From 3 hours</small>
+               <b><span className="typing-text"> {(this.props.loginUser['.key'] === this.props.user.chatWith)?(this.props.user.istyping?"typing....":""):""}</span></b>
+
+
             </div>
         </div>
 
     </div>
 </li>
     },
-    
+
     startChatWithUser:function(){
-        
+
         this.props.fRef.user.update({
             chatWith : this.state.key,
             chatWithName : this.state.name,
-           
-            
-        })
-        
+
+        }).then(function(){
+            this.props.clearText()
+        }.bind(this))
+
     }
 })
