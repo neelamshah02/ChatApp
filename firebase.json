@@ -1,0 +1,29 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore":[
+      "**/node_modules/**",
+      "**/sass/**",
+      "**/src/**",
+      "**/.git/**",
+      ".firebaserc",
+      ".gitignore",
+      ".travis.xml",
+      "database.rules.json",
+      "firebase.json",
+      "gulpfile.js",
+      "package.json",
+      "README.md"
+      
+      ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

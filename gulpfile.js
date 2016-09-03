@@ -42,7 +42,22 @@ var bundler = watchify(browserify({
   packageCache: {},
   fullPaths: true
 }));
-
+var bundler_build = browserify({
+  entries: ['./src/app.jsx'],
+  transform: [reactify],
+  extensions: ['.jsx'],
+  debug: true,
+  cache: {},
+  packageCache: {},
+  fullPaths: true
+});
+function bundler_bld(){
+   return bundler_build
+    .bundle()
+    .on('error', notify)
+    .pipe(source('main.js'))
+    .pipe(gulp.dest('./'))
+}
 function bundle() {
   return bundler
     .bundle()
@@ -54,6 +69,10 @@ bundler.on('update', bundle);
 
 gulp.task('build', function() {
   bundle()
+});
+
+gulp.task('jsx-build', function() {
+  bundler_bld()
 });
 
 gulp.task('serve', function(done) {
